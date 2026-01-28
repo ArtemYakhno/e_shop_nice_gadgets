@@ -1,21 +1,37 @@
-import React from 'react';
+import { matchPath, Outlet, useLocation } from 'react-router-dom';
 import './App.scss';
+import { Header } from './layouts/Header';
+import { BurgerMenu } from './layouts/BurgerMenu';
+import { Breadcrumbs } from './components/Breadcrumbs';
+import { RoutePath } from './types/RoutePath';
+import { Footer } from './layouts/Footer';
 
-interface Props {
-  onClick: () => void;
-  children: React.ReactNode;
-}
+const BREADCRUMB_ROUTES = [
+  RoutePath.Phones,
+  RoutePath.Phone,
+  RoutePath.Tablets,
+  RoutePath.Tablet,
+  RoutePath.Accessories,
+  RoutePath.Accessory,
+  RoutePath.Favorites,
+];
 
-export const Provider: React.FC<Props> = React.memo(({ onClick, children }) => (
-  <button type="button" onClick={onClick}>
-    {children}
-  </button>
-));
+export const App = () => {
+  const location = useLocation();
 
-export const App: React.FC = () => {
+  const showBreadcrumbs = BREADCRUMB_ROUTES.some(route =>
+    matchPath(route, location.pathname),
+  );
+
   return (
-    <div className="starter">
-      <Provider onClick={() => ({})}>TodoList</Provider>
-    </div>
+    <>
+      <Header />
+      <BurgerMenu />
+      <main className="page__main container">
+        {showBreadcrumbs && <Breadcrumbs />}
+        <Outlet />
+      </main>
+      <Footer />
+    </>
   );
 };

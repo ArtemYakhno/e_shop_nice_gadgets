@@ -1,3 +1,2 @@
-.starter {
-  font-size: 18px;
-}
+@use './styles/index' as *;
+@use './styles/default' as *;
